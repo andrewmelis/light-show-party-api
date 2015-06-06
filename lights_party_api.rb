@@ -20,6 +20,11 @@ def send_message(party)
                           message_body: {name: party["name"]}.to_json)
 end
 
+def put_partygoer_on_the_list(partygoer)
+  sqs_client.send_message(queue_url: PARTY_QUEUE,
+                          message_body: {token: partygoer["token"]}.to_json)
+end
+
 ### ENDPOINTS ###
 get '/' do
   sqs_client.get_queue_attributes(queue_url: PARTY_QUEUE, attribute_names: ["QueueArn"]).each do |response|
@@ -32,4 +37,9 @@ post '/party' do
   enqueue_party(party)
   "woohoo"
 end
-  
+
+post '/partygoer' do
+  partygoer = JSON.parse(request.body.read)
+  put_partygoer_on_the_list(partygoer)
+end
+
