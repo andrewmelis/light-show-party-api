@@ -12,7 +12,7 @@ def sqs_client
 end
 
 def enqueue_party(party)
-  250.times { send_message(party) }
+  50.times { send_message(party) }
 end
 
 def send_message(party)
