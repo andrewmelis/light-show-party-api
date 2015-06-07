@@ -40,6 +40,8 @@ end
 
 post '/partygoer' do
   partygoer = JSON.parse(request.body.read)
+  puts partygoer
   put_partygoer_on_the_list(partygoer["token"])
+  partygoer["token"]
 end
 
