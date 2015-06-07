@@ -22,7 +22,7 @@ end
 
 def put_partygoer_on_the_list(partygoer)
   sqs_client.send_message(queue_url: PARTY_QUEUE,
-                          message_body: {token: partygoer["token"]}.to_json)
+                          message_body: {token: partygoer}.to_json)
 end
 
 ### ENDPOINTS ###
@@ -40,6 +40,6 @@ end
 
 post '/partygoer' do
   partygoer = JSON.parse(request.body.read)
-  put_partygoer_on_the_list(partygoer)
+  put_partygoer_on_the_list(partygoer["token"])
 end
 
