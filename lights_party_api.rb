@@ -2,7 +2,6 @@ require 'sinatra'
 require 'aws-sdk'
 require 'json'
 
-
 ### METHODS ###
 
 PARTY_QUEUE = "https://sqs.us-east-1.amazonaws.com/405483072970/remote-light-show"
@@ -27,21 +26,18 @@ end
 
 ### ENDPOINTS ###
 get '/' do
-  sqs_client.get_queue_attributes(queue_url: PARTY_QUEUE, attribute_names: ["QueueArn"]).each do |response|
-    response.attributes
-  end
+  puts "if you don't know..."
 end
 
 post '/party' do
   party = JSON.parse(request.body.read)
-  enqueue_party(party)
-  "woohoo"
+  enqueue_party(party["name"])
+  "party time for #{party}"
 end
 
 post '/partygoer' do
   partygoer = JSON.parse(request.body.read)
-  puts partygoer
   put_partygoer_on_the_list(partygoer["token"])
-  partygoer["token"]
+  partygoer
 end
 
